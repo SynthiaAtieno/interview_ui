@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 
 class HomePage extends StatefulWidget {
-  final token;
+  final String token;
   const HomePage({super.key, required this.token});
 
   @override
@@ -15,7 +15,6 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     Map<String, dynamic> jwtDecodedToken = JwtDecoder.decode(widget.token);
     email = jwtDecodedToken['sub'];
-
     super.initState();
   }
   @override
