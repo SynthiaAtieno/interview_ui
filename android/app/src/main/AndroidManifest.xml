@@ -1,6 +1,7 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
-    <application
-        android:label="interview_ui"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.interview">
+   <application
+        android:label="interview"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

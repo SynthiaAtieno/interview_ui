@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -18,49 +17,52 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
+  TextEditingController emailC = TextEditingController();
 
-   TextEditingController emailC = TextEditingController();
+  TextEditingController passwordC = TextEditingController();
 
-   TextEditingController passwordC = TextEditingController();
-
-   TextEditingController nameC = TextEditingController();
+  TextEditingController nameC = TextEditingController();
 
   bool isShowPassword = true;
   final isLoading = true;
 
   Future<Map<String, dynamic>?> register() async {
-    if(emailC.text.trim() != "" && nameC.text.trim() !="" && passwordC.text.trim() != ""){
+    if (emailC.text.trim() != "" &&
+        nameC.text.trim() != "" &&
+        passwordC.text.trim() != "") {
       Map<String, dynamic> data = {
         'name': nameC.text.trim(),
         'email': emailC.text.trim(),
         'password': passwordC.text.trim()
       };
 
-      var response = await http.post(Uri.parse("http://192.168.42.154:8080/api/register"),
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-          },
-          body: json.encode(data));
+      var response =
+          await http.post(Uri.parse("http://192.168.0.14:8080/api/register"),
+              headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+              },
+              body: json.encode(data));
       var body = jsonDecode(response.body);
-      if(body['code'] == 200){
-        Routes.instance.pushAndRemoveUtil(widget: const Login(), context: context);
-      }
-      else{
-        print("message");
-        print(body['message']);
+      if (body['code'] == 200) {
+        Routes.instance
+            .pushAndRemoveUtil(widget: const Login(), context: context);
+      } else {
+        final snackBar = SnackBar(content: Text(body['message']));
+        ScaffoldMessenger.of(context)
+          ..removeCurrentSnackBar()
+          ..showSnackBar(snackBar);
       }
 
       return body;
-
-
-    }else{
-      print("Please fill all the fields");
+    } else {
+      const snackBar = SnackBar(content: Text("Please fill all the fields"));
+      ScaffoldMessenger.of(context)
+        ..removeCurrentSnackBar()
+        ..showSnackBar(snackBar);
       return null;
     }
-
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -96,17 +98,20 @@ class _SignUpState extends State<SignUp> {
                   hintText: "Password",
                   iconData: Icons.lock,
                   label: "Password",
-                  suffixIconData: !isShowPassword ? Icons.visibility : Icons.visibility_off,
-                  onTap: (){
+                  suffixIconData:
+                      !isShowPassword ? Icons.visibility : Icons.visibility_off,
+                  onTap: () {
                     setState(() {
                       isShowPassword = !isShowPassword;
                     });
                   },
                 ),
                 const SizedBox(height: 18),
-                PrimaryButton(onPressed: () {
-                  register();
-                  }, title: "SignUp"),
+                PrimaryButton(
+                    onPressed: () {
+                      register();
+                    },
+                    title: "SignUp"),
                 const SizedBox(height: 10),
                 const Center(
                   child: Text(
@@ -117,10 +122,13 @@ class _SignUpState extends State<SignUp> {
                 Center(
                   child: TextButton(
                     onPressed: () {
-                      Routes.instance.pushAndRemoveUtil(widget: const Login(), context: context);},
+                      Routes.instance.pushAndRemoveUtil(
+                          widget: const Login(), context: context);
+                    },
                     child: Text(
                       "Login",
-                      style: TextStyle(fontSize: 14, color: Theme.of(context).primaryColor),
+                      style: TextStyle(
+                          fontSize: 14, color: Theme.of(context).primaryColor),
                     ),
                   ),
                 ),
@@ -131,5 +139,4 @@ class _SignUpState extends State<SignUp> {
       ),
     );
   }
-
 }

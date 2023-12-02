@@ -1,7 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:interview_ui/screen/auth/signup.dart';
+import 'package:interview/screen/auth/signup.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../constants/routes/routes.dart';
 import '../../widget/elevated_button.dart';
@@ -10,6 +11,7 @@ import '../../widget/top_title.dart';
 import '../homepage.dart';
 
 import 'package:http/http.dart' as http;
+
 class Login extends StatefulWidget {
   const Login({super.key});
 
@@ -18,26 +20,61 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-
   final TextEditingController emailController = TextEditingController();
 
   final TextEditingController passwordController = TextEditingController();
   bool isShowPassword = true;
 
-  Future<Map<String, dynamic>> login() async {
-    Map<String, dynamic> data = {
-      'username': emailController.text.trim(),
-      'password': passwordController.text.trim(),
-    };
-    var response = await http.post(Uri.parse("http:192.168.42.154:8080/api/login"),
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-        body: json.encode(data));
-    return jsonDecode(response.body);
+  late SharedPreferences prefs;
 
+  @override
+  void initState(){
+    // TODO: implement initState
+    initSharedPref();
+    //prefs = await SharedPreferences.getInstance();
+    super.initState();
   }
+
+  void initSharedPref() async{
+    prefs = await SharedPreferences.getInstance();
+  }
+  Future<Map<String, dynamic>?> login() async {
+    if (emailController.text.trim() != "" &&
+        passwordController.text.trim() != "") {
+      Map<String, dynamic> data = {
+        'username': emailController.text.trim(),
+        'password': passwordController.text.trim(),
+      };
+      var response =
+          await http.post(Uri.parse("http://192.168.0.14:8080/api/login"),
+              headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+              },
+              body: json.encode(data));
+      var body = jsonDecode(response.body);
+
+      if (body['code'] == 200) {
+        var token  = body['token'];
+        prefs.setString('token', token);
+        Routes.instance
+            .pushAndRemoveUtil(widget: HomePage(token: token,), context: context);
+      } else {
+        final snackBar = SnackBar(content: Text(body['message']));
+        ScaffoldMessenger.of(context)
+          ..removeCurrentSnackBar()
+          ..showSnackBar(snackBar);
+      }
+      return body;
+    } else {
+      const snackBar = SnackBar(content: Text("Please fill all the fields"));
+      ScaffoldMessenger.of(context)
+        ..removeCurrentSnackBar()
+        ..showSnackBar(snackBar);
+    }
+    return null;
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -65,9 +102,10 @@ class _LoginState extends State<Login> {
                   controller: passwordController,
                   hintText: "Password",
                   iconData: Icons.lock,
-                  suffixIconData: !isShowPassword ? Icons.visibility : Icons.visibility_off,
+                  suffixIconData:
+                      !isShowPassword ? Icons.visibility : Icons.visibility_off,
                   label: "Password",
-                  onTap: (){
+                  onTap: () {
                     setState(() {
                       isShowPassword = !isShowPassword;
                     });
@@ -76,29 +114,32 @@ class _LoginState extends State<Login> {
                 const SizedBox(
                   height: 14,
                 ),
-                PrimaryButton(title: "LOGIN", onPressed: () {
-                  login();
-                  Routes.instance.pushAndRemoveUtil(widget: const HomePage(), context: context);
-                }),
+                PrimaryButton(
+                    title: "LOGIN",
+                    onPressed: () {
+                      login();
+                    }),
                 const SizedBox(
                   height: 6,
                 ),
                 const Center(
                     child: Text(
-                      "Don't have an account?",
-                      style: TextStyle(fontSize: 16),
-                    )),
+                  "Don't have an account?",
+                  style: TextStyle(fontSize: 16),
+                )),
                 Center(
                     child: TextButton(
-                      onPressed: () {
-                        Routes.instance.pushAndRemoveUtil(widget: const SignUp(), context: context);
-                        //Routes.instance.push(widget:  SignUp(), context: context);
-                      },
-                      child: Text(
-                        "Create Account",
-                        style: TextStyle(fontSize: 14,color: Theme.of(context).primaryColor),
-                      ),
-                    )),
+                  onPressed: () {
+                    Routes.instance.pushAndRemoveUtil(
+                        widget: const SignUp(), context: context);
+                    //Routes.instance.push(widget:  SignUp(), context: context);
+                  },
+                  child: Text(
+                    "Create Account",
+                    style: TextStyle(
+                        fontSize: 14, color: Theme.of(context).primaryColor),
+                  ),
+                )),
               ],
             ),
           ),
@@ -106,4 +147,6 @@ class _LoginState extends State<Login> {
       ),
     );
   }
+
+
 }

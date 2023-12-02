@@ -1,6 +1,6 @@
 {
-    "name": "interview_ui",
-    "short_name": "interview_ui",
+    "name": "interview",
+    "short_name": "interview",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

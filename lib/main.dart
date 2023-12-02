@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:interview_ui/screen/auth/signup.dart';
+import 'package:interview/screen/auth/signup.dart';
 
 import 'constants/theme.dart';
 
