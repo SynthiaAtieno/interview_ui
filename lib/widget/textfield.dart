@@ -12,6 +12,7 @@ class TextFields extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      controller: controller,
       obscureText: obsecure,
       decoration: InputDecoration(
           hintText: hintText,

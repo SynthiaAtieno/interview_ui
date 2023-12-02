@@ -1,13 +1,12 @@
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
 import '../../constants/routes/routes.dart';
-import '../../model/register.dart';
 import '../../widget/elevated_button.dart';
 import '../../widget/textfield.dart';
 import '../../widget/top_title.dart';
-import '../homepage.dart';
 import 'package:http/http.dart' as http;
 import 'login.dart';
 
@@ -20,33 +19,41 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
 
-  final emailC = TextEditingController();
+   TextEditingController emailC = TextEditingController();
 
-  final passwordC = TextEditingController();
+   TextEditingController passwordC = TextEditingController();
 
-  final nameC = TextEditingController();
+   TextEditingController nameC = TextEditingController();
 
   bool isShowPassword = true;
 
-  Future<Map<String, dynamic>> register(String email, String password, String name) async {
+  Future<Map<String, dynamic>> register() async {
     Map<String, dynamic> data = {
       'name': nameC.text.trim(),
       'email': emailC.text.trim(),
       'password': passwordC.text.trim()
     };
 
-    var response = await http.post(Uri.parse("http://192.168.42.154:8080/api/register"),
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-        body: json.encode(data));
+      var response = await http.post(Uri.parse("http://192.168.42.154:8080/api/register"),
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
+          body: json.encode(data));
+      var body = jsonDecode(response.body);
+      if(body['code'] == 200){
+        Routes.instance.pushAndRemoveUtil(widget: const Login(), context: context);
+      }
+      else{
+        print("code");
+        print(body['code']);
+      }
+
+    return body;
 
 
-    print("response");
-    print(response.body);
-    return jsonDecode(response.body);
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -91,9 +98,8 @@ class _SignUpState extends State<SignUp> {
                 ),
                 const SizedBox(height: 18),
                 PrimaryButton(onPressed: () {
-                  register(emailC.text.trim(), passwordC.text.trim(), nameC.text.trim());
-                  Routes.instance.pushAndRemoveUtil(widget: const HomePage(), context: context);
-                }, title: "SignUp"),
+                  register();
+                  }, title: "SignUp"),
                 const SizedBox(height: 10),
                 const Center(
                   child: Text(
