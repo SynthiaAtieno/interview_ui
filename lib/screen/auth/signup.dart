@@ -26,13 +26,15 @@ class _SignUpState extends State<SignUp> {
    TextEditingController nameC = TextEditingController();
 
   bool isShowPassword = true;
+  final isLoading = true;
 
-  Future<Map<String, dynamic>> register() async {
-    Map<String, dynamic> data = {
-      'name': nameC.text.trim(),
-      'email': emailC.text.trim(),
-      'password': passwordC.text.trim()
-    };
+  Future<Map<String, dynamic>?> register() async {
+    if(emailC.text.trim() != "" && nameC.text.trim() !="" && passwordC.text.trim() != ""){
+      Map<String, dynamic> data = {
+        'name': nameC.text.trim(),
+        'email': emailC.text.trim(),
+        'password': passwordC.text.trim()
+      };
 
       var response = await http.post(Uri.parse("http://192.168.42.154:8080/api/register"),
           headers: {
@@ -45,12 +47,17 @@ class _SignUpState extends State<SignUp> {
         Routes.instance.pushAndRemoveUtil(widget: const Login(), context: context);
       }
       else{
-        print("code");
-        print(body['code']);
+        print("message");
+        print(body['message']);
       }
 
-    return body;
+      return body;
 
+
+    }else{
+      print("Please fill all the fields");
+      return null;
+    }
 
   }
 
@@ -124,6 +131,5 @@ class _SignUpState extends State<SignUp> {
       ),
     );
   }
-
 
 }
