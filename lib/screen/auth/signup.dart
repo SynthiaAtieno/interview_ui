@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
+import '../../constants/constatnts.dart';
 import '../../constants/routes/routes.dart';
 import '../../widget/elevated_button.dart';
 import '../../widget/textfield.dart';
@@ -24,7 +25,7 @@ class _SignUpState extends State<SignUp> {
   TextEditingController nameC = TextEditingController();
 
   bool isShowPassword = true;
-  final isLoading = true;
+  bool isLoading = false;
 
   Future<Map<String, dynamic>?> register() async {
     if (emailC.text.trim() != "" &&
@@ -37,7 +38,7 @@ class _SignUpState extends State<SignUp> {
       };
 
       var response =
-          await http.post(Uri.parse("http://192.168.0.14:8080/api/register"),
+          await http.post(Uri.parse("${Constants.base_url}register"),
               headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
@@ -79,6 +80,7 @@ class _SignUpState extends State<SignUp> {
                     subtitle: "Create an account to continue"),
                 const SizedBox(height: 10),
                 TextFields(
+                  keyboardType: TextInputType.name,
                     obsecure: false,
                     controller: nameC,
                     hintText: "Name",
@@ -86,6 +88,7 @@ class _SignUpState extends State<SignUp> {
                     label: "Name"),
                 const SizedBox(height: 10),
                 TextFields(
+                  keyboardType: TextInputType.emailAddress,
                     obsecure: false,
                     controller: emailC,
                     hintText: "Email",
@@ -93,6 +96,7 @@ class _SignUpState extends State<SignUp> {
                     label: "Email"),
                 const SizedBox(height: 10),
                 TextFields(
+                  keyboardType: TextInputType.visiblePassword,
                   obsecure: true,
                   controller: passwordC,
                   hintText: "Password",

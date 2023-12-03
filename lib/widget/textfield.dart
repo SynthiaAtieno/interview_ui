@@ -6,12 +6,14 @@ class TextFields extends StatelessWidget {
   final IconData? suffixIconData;
   final TextEditingController controller;
   final bool obsecure;
+  final keyboardType;
   final void Function()? onTap;
-  const TextFields({super.key, required this.hintText, required this.iconData, this.suffixIconData, required this.label, required this.controller, required this.obsecure, this.onTap});
+  const TextFields({super.key, required this.hintText, required this.iconData, this.suffixIconData, required this.label, required this.controller, required this.obsecure, this.onTap, required this.keyboardType});
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      keyboardType: keyboardType,
       controller: controller,
       obscureText: obsecure,
       decoration: InputDecoration(
