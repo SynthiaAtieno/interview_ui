@@ -40,6 +40,9 @@ class _LoginState extends State<Login> {
     prefs = await SharedPreferences.getInstance();
   }
   Future<Map<String, dynamic>?> login() async {
+    setState(() {
+      isLoading = true;
+    });
     try{
       if (emailController.text.trim() != "" &&
           passwordController.text.trim() != "") {
@@ -49,7 +52,7 @@ class _LoginState extends State<Login> {
             'password': passwordController.text.trim(),
           };
           var response =
-          await http.post(Uri.parse("http://192.168.2.1:8080/api/login"),
+          await http.post(Uri.parse("${Constants.base_url}login"),
               headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
@@ -57,9 +60,9 @@ class _LoginState extends State<Login> {
               body: json.encode(data));
           var body = jsonDecode(response.body);
 
-          /*setState(() {
+          setState(() {
         isLoading = false;
-      });*/
+      });
           print(body);
           if (body['code'] == 200) {
             var token  = body['token'];
@@ -67,6 +70,9 @@ class _LoginState extends State<Login> {
             Routes.instance
                 .pushAndRemoveUtil(widget: HomePage(token: token,), context: context);
           } else {
+            setState(() {
+              isLoading = false;
+            });
             final snackBar = SnackBar(content: Text(body['message']));
             ScaffoldMessenger.of(context)
               ..removeCurrentSnackBar()
@@ -84,9 +90,9 @@ class _LoginState extends State<Login> {
 
 
       } else {
-        /* setState(() {
+         setState(() {
         isLoading = false;
-      });*/
+      });
         const snackBar = SnackBar(content: Text("Please fill all the fields"));
         ScaffoldMessenger.of(context)
           ..removeCurrentSnackBar()
@@ -94,7 +100,6 @@ class _LoginState extends State<Login> {
       }
     }
     catch(e){
-      print("fyturerrtert");
       print(e.toString());
     }
 
