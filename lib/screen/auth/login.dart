@@ -71,7 +71,6 @@ class _LoginState extends State<Login> {
             prefs.setString('token', token);
             prefs.setString('name', name);
             prefs.setInt("id", uid);
-            print(name);
             Routes.instance
                 .pushAndRemoveUtil(widget: HomePage(token: token,), context: context);
           } else {
@@ -86,6 +85,9 @@ class _LoginState extends State<Login> {
           return body;
         }
         else{
+          setState(() {
+            isLoading = false;
+          });
           const snackBar = SnackBar(content: Text("Please enter a valid email address"));
           ScaffoldMessenger.of(context)
             ..removeCurrentSnackBar()
@@ -105,7 +107,14 @@ class _LoginState extends State<Login> {
       }
     }
     catch(e){
-      print(e.toString());
+      setState(() {
+        isLoading = false;
+      });
+      final snackBar = SnackBar(content: Text(e.toString()));
+      ScaffoldMessenger.of(context)
+        ..removeCurrentSnackBar()
+        ..showSnackBar(snackBar);
+      //print(e.toString());
     }
 
     print("object");
