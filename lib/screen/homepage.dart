@@ -15,25 +15,52 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late String email;
   late SharedPreferences preferences;
+  String name ='';
+  void initSharedPref() async{
+    preferences = await SharedPreferences.getInstance();
+    setState(() {
+      name = preferences.getString('name')!;
+    });
+
+  }
   @override
   void initState() {
     Map<String, dynamic> jwtDecodedToken = JwtDecoder.decode(widget.token);
     email = jwtDecodedToken['sub'];
     initSharedPref();
+
     super.initState();
   }
-  void initSharedPref() async{
-    preferences = await SharedPreferences.getInstance();
-  }
+
+
   @override
   Widget build(BuildContext context) {
+
     return  Scaffold(
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Center(
-            child: Text("Welcome home $email"),
-          ),
+          const SizedBox(height: kToolbarHeight,),
+          Container(
+
+              width: MediaQuery.of(context).size.height,
+              decoration: const BoxDecoration(
+                shape: BoxShape.rectangle
+              ),
+              child: Column(
+            children:  [
+              Container(
+              padding: const EdgeInsets.fromLTRB(16, 45, 0, 0),
+            height: MediaQuery.of(context).size.height * 0.4,
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage("assets/images/profile.png"),
+                  fit: BoxFit.fill),
+            ),),
+              Text(name, style: const TextStyle(fontSize: 18, color: Colors.black, fontWeight: FontWeight.w300),),
+              Text(email, style: const TextStyle(fontSize: 18, color: Colors.black, fontWeight: FontWeight.bold),),
+            ],
+          )),
           ElevatedButton(onPressed: (){
             preferences.clear();
             Routes.instance.pushAndRemoveUtil(widget: const Login(), context: context);

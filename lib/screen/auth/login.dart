@@ -63,10 +63,15 @@ class _LoginState extends State<Login> {
           setState(() {
         isLoading = false;
       });
-          print(body);
+
           if (body['code'] == 200) {
             var token  = body['token'];
+            var uid = body['user']['id'];
+            var name = body['user']['name'];
             prefs.setString('token', token);
+            prefs.setString('name', name);
+            prefs.setInt("id", uid);
+            print(name);
             Routes.instance
                 .pushAndRemoveUtil(widget: HomePage(token: token,), context: context);
           } else {
