@@ -4,6 +4,7 @@ import 'package:interview/data/menu_items.dart';
 import 'package:interview/model/menuItem.dart';
 import 'package:interview/screen/auth/login.dart';
 import 'package:interview/screen/deposit.dart';
+import 'package:interview/screen/withdraw.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -41,8 +42,14 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    var height = MediaQuery.of(context).size.height;
-    var width = MediaQuery.of(context).size.width;
+    var height = MediaQuery
+        .of(context)
+        .size
+        .height;
+    var width = MediaQuery
+        .of(context)
+        .size
+        .width;
     return Scaffold(
       backgroundColor: Colors.blueGrey,
       body: Container(
@@ -72,9 +79,9 @@ class _HomePageState extends State<HomePage> {
                         ),
                         ClipRRect(
                             child: Image.asset(
-                          "assets/images/profile.png",
-                          height: 80,
-                        )),
+                              "assets/images/profile.png",
+                              height: 80,
+                            )),
                         Positioned(
                             bottom: 0,
                             child: Column(
@@ -104,7 +111,7 @@ class _HomePageState extends State<HomePage> {
                                 color: Colors.white,
                                 onSelected: (item) => onSelected(context, item),
                                 itemBuilder: (context) =>
-                                    [...MenuItems.items.map(buildItem).toList()],
+                                [...MenuItems.items.map(buildItem).toList()],
                               ),
                             ))
                       ],
@@ -112,6 +119,7 @@ class _HomePageState extends State<HomePage> {
                   )),
               Container(
                 height: height * 0.75,
+                width: width,
                 decoration: const BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.only(
@@ -121,26 +129,24 @@ class _HomePageState extends State<HomePage> {
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
                     children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children:  [
-                          const Text("Your balance", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w300),),
-                          Text(balance.toString(), style: TextStyle(fontSize: 16, fontWeight: FontWeight.w300),),
-                        ],
-                      ),
-                      TextButton(onPressed: (){
-                        Routes.instance.push(widget: const Deposit(), context: context);
-                      }, child: const Text("deposit"))
-
+                  TextButton(onPressed: () {
+                    Routes.instance.push(
+                        widget: const Deposit(), context: context);
+                  }, child: const Text("deposit")),
+                  TextButton(onPressed: () {
+                    Routes.instance.push(
+                        widget: const Withdraw(), context: context);
+                  }, child: const Text("Withdraw"),)
                     ],
                   ),
                 ),
               ),
 
             ],
-          ),
-        ),
-      ),
+          ),)
+        ,
+      )
+      ,
     );
   }
 
@@ -170,17 +176,16 @@ class _HomePageState extends State<HomePage> {
   }
 
   showAlertDialog(BuildContext context) {
-
     // set up the buttons
     Widget cancelButton = TextButton(
       child: const Text("Cancel"),
-      onPressed:  () {
+      onPressed: () {
         Navigator.of(context).pop();
       },
     );
     Widget continueButton = TextButton(
       child: const Text("Continue"),
-      onPressed:  () {
+      onPressed: () {
         preferences.clear();
         Routes.instance
             .pushAndRemoveUtil(widget: const Login(), context: context);

@@ -1,24 +1,20 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:interview/widget/elevated_button.dart';
-import 'package:interview/widget/textfield.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 import '../constants/constatnts.dart';
-
-class Deposit extends StatefulWidget {
-  const Deposit({super.key});
+import '../widget/elevated_button.dart';
+import '../widget/textfield.dart';
+class Withdraw extends StatefulWidget {
+  const Withdraw({super.key});
 
   @override
-  State<Deposit> createState() => _DepositState();
+  State<Withdraw> createState() => _WithdrawState();
 }
 
-
-
-class _DepositState extends State<Deposit> {
-
+class _WithdrawState extends State<Withdraw> {
   late SharedPreferences preferences;
   var user = 0;
   void initSharedPref() async{
@@ -34,7 +30,7 @@ class _DepositState extends State<Deposit> {
   }
 
   final TextEditingController amount = TextEditingController();
-  Future<Map<String, dynamic>?> deposit() async{
+  Future<Map<String, dynamic>?> withdraw() async{
     try{
       if(amount.text.trim()!=""){
         Map<String, dynamic>data = {
@@ -43,7 +39,7 @@ class _DepositState extends State<Deposit> {
         };
         print(data);
         var response =
-        await http.post(Uri.parse("${Constants.base_url}transactions/deposit"),
+        await http.post(Uri.parse("${Constants.base_url}transactions/withdraw"),
             headers: {
               'Content-Type': 'application/json',
               'Accept': 'application/json',
@@ -88,18 +84,12 @@ class _DepositState extends State<Deposit> {
 
     return null;
   }
-  @override
-  void dispose() {
-    amount.dispose();
-    // TODO: implement dispose
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Deposit"),
+        title: const Text("Withdraw"),
         centerTitle: true,
         elevation: 0,
       ),
@@ -117,17 +107,15 @@ class _DepositState extends State<Deposit> {
                   obsecure: false,
                   keyboardType: TextInputType.number),
               const SizedBox(height: 15,),
-               PrimaryButton(onPressed: (){
-                 deposit();
-               },title: "Deposit")
+              PrimaryButton(onPressed: (){
+                withdraw();
+              },title: "Withdraw")
             ],
           ),
         ),
       ),
     );
   }
-
-
 
 
 }
