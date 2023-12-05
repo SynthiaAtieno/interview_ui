@@ -16,7 +16,8 @@ class TopTitles extends StatelessWidget {
             Center(
               child: Text(
                 title,
-                style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                style: const TextStyle(
+                    fontSize: 18.0, fontWeight: FontWeight.bold),
               ),
             ),
             const SizedBox(

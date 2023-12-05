@@ -6,35 +6,39 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'constants/theme.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences preferences = await SharedPreferences.getInstance();
-  if(preferences.getString('token') == null){
-    runApp(const MyApp(token: null,));
+  if (preferences.getString('token') == null) {
+    runApp(const MyApp(
+      token: null,
+    ));
     print('token has expired');
-  }else {
-    runApp(MyApp(token: preferences.getString('token'),));
+  } else {
+    runApp(MyApp(
+      token: preferences.getString('token'),
+    ));
   }
 }
 
-
 class MyApp extends StatefulWidget {
   final String? token;
-   const MyApp( {this.token,Key? key}): super(key: key);
+
+  const MyApp({this.token, Key? key}) : super(key: key);
 
   @override
   State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
-
   @override
   Widget build(BuildContext context) {
-    return  MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Interview App',
       theme: themeData,
-      home: widget.token != null ? HomePage(token: widget.token!) : const Login(),
+      home:
+          widget.token != null ? HomePage(token: widget.token!) : const Login(),
     );
   }
 }

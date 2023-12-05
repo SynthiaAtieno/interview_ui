@@ -42,14 +42,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    var height = MediaQuery
-        .of(context)
-        .size
-        .height;
-    var width = MediaQuery
-        .of(context)
-        .size
-        .width;
+    var height = MediaQuery.of(context).size.height;
+    var width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Colors.blueGrey,
       body: Container(
@@ -79,9 +73,9 @@ class _HomePageState extends State<HomePage> {
                         ),
                         ClipRRect(
                             child: Image.asset(
-                              "assets/images/profile.png",
-                              height: 80,
-                            )),
+                          "assets/images/profile.png",
+                          height: 80,
+                        )),
                         Positioned(
                             bottom: 0,
                             child: Column(
@@ -110,8 +104,9 @@ class _HomePageState extends State<HomePage> {
                               child: PopupMenuButton<MenuItem>(
                                 color: Colors.white,
                                 onSelected: (item) => onSelected(context, item),
-                                itemBuilder: (context) =>
-                                [...MenuItems.items.map(buildItem).toList()],
+                                itemBuilder: (context) => [
+                                  ...MenuItems.items.map(buildItem).toList()
+                                ],
                               ),
                             ))
                       ],
@@ -129,24 +124,27 @@ class _HomePageState extends State<HomePage> {
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
                     children: [
-                  TextButton(onPressed: () {
-                    Routes.instance.push(
-                        widget: const Deposit(), context: context);
-                  }, child: const Text("deposit")),
-                  TextButton(onPressed: () {
-                    Routes.instance.push(
-                        widget: const Withdraw(), context: context);
-                  }, child: const Text("Withdraw"),)
+                      TextButton(
+                          onPressed: () {
+                            Routes.instance.push(
+                                widget: const Deposit(), context: context);
+                          },
+                          child: const Text("deposit")),
+                      TextButton(
+                        onPressed: () {
+                          Routes.instance
+                              .push(widget: const Withdraw(), context: context);
+                        },
+                        child: const Text("Withdraw"),
+                      )
                     ],
                   ),
                 ),
               ),
-
             ],
-          ),)
-        ,
-      )
-      ,
+          ),
+        ),
+      ),
     );
   }
 

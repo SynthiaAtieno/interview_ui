@@ -15,18 +15,17 @@ class Deposit extends StatefulWidget {
   State<Deposit> createState() => _DepositState();
 }
 
-
-
 class _DepositState extends State<Deposit> {
-
   late SharedPreferences preferences;
   var user = 0;
-  void initSharedPref() async{
+
+  void initSharedPref() async {
     preferences = await SharedPreferences.getInstance();
     setState(() {
       user = preferences.getInt("id")!;
     });
   }
+
   @override
   void initState() {
     initSharedPref();
@@ -34,20 +33,21 @@ class _DepositState extends State<Deposit> {
   }
 
   final TextEditingController amount = TextEditingController();
-  Future<Map<String, dynamic>?> deposit() async{
-    try{
-      if(amount.text.trim()!=""){
-        Map<String, dynamic>data = {
-          "amount":double.parse(amount.text.trim()),
-          "user":user
+
+  Future<Map<String, dynamic>?> deposit() async {
+    try {
+      if (amount.text.trim() != "") {
+        Map<String, dynamic> data = {
+          "amount": double.parse(amount.text.trim()),
+          "user": user
         };
         print(data);
-        var response =
-        await http.post(Uri.parse("${Constants.base_url}transactions/deposit"),
+        var response = await http.post(
+            Uri.parse("${Constants.base_url}transactions/deposit"),
             headers: {
               'Content-Type': 'application/json',
               'Accept': 'application/json',
-              'Authorization':'Bearer ${preferences.getString('token')!}'
+              'Authorization': 'Bearer ${preferences.getString('token')!}'
             },
             body: json.encode(data));
         var body = jsonDecode(response.body);
@@ -72,14 +72,13 @@ class _DepositState extends State<Deposit> {
             ..showSnackBar(snackBar);
         }
         return body;
-      }
-      else{
+      } else {
         const snackBar = SnackBar(content: Text("Please fill the amount"));
         ScaffoldMessenger.of(context)
           ..removeCurrentSnackBar()
           ..showSnackBar(snackBar);
       }
-    }catch(e){
+    } catch (e) {
       final snackBar = SnackBar(content: Text(e.toString()));
       ScaffoldMessenger.of(context)
         ..removeCurrentSnackBar()
@@ -88,6 +87,7 @@ class _DepositState extends State<Deposit> {
 
     return null;
   }
+
   @override
   void dispose() {
     amount.dispose();
@@ -108,7 +108,9 @@ class _DepositState extends State<Deposit> {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-              const SizedBox(height: kToolbarHeight,),
+              const SizedBox(
+                height: kToolbarHeight,
+              ),
               TextFields(
                   hintText: "amount",
                   iconData: Icons.monetization_on_sharp,
@@ -116,18 +118,18 @@ class _DepositState extends State<Deposit> {
                   controller: amount,
                   obsecure: false,
                   keyboardType: TextInputType.number),
-              const SizedBox(height: 15,),
-               PrimaryButton(onPressed: (){
-                 deposit();
-               },title: "Deposit")
+              const SizedBox(
+                height: 15,
+              ),
+              PrimaryButton(
+                  onPressed: () {
+                    deposit();
+                  },
+                  title: "Deposit")
             ],
           ),
         ),
       ),
     );
   }
-
-
-
-
 }

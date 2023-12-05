@@ -31,48 +31,52 @@ class _LoginState extends State<Login> {
   late SharedPreferences prefs;
 
   @override
-  void initState(){
+  void initState() {
     initSharedPref();
     super.initState();
   }
 
-  void initSharedPref() async{
+  void initSharedPref() async {
     prefs = await SharedPreferences.getInstance();
   }
+
   Future<Map<String, dynamic>?> login() async {
     setState(() {
       isLoading = true;
     });
-    try{
+    try {
       if (emailController.text.trim() != "" &&
           passwordController.text.trim() != "") {
-        if(Constants.emailRegex(emailController.text.trim())){
+        if (Constants.emailRegex(emailController.text.trim())) {
           Map<String, dynamic> data = {
             'username': emailController.text.trim(),
             'password': passwordController.text.trim(),
           };
           var response =
-          await http.post(Uri.parse("${Constants.base_url}login"),
-              headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-              },
-              body: json.encode(data));
+              await http.post(Uri.parse("${Constants.base_url}login"),
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                  },
+                  body: json.encode(data));
           var body = jsonDecode(response.body);
 
           setState(() {
-        isLoading = false;
-      });
+            isLoading = false;
+          });
 
           if (body['code'] == 200) {
-            var token  = body['token'];
+            var token = body['token'];
             var uid = body['user']['id'];
             var name = body['user']['name'];
             prefs.setString('token', token);
             prefs.setString('name', name);
             prefs.setInt("id", uid);
-            Routes.instance
-                .pushAndRemoveUtil(widget: HomePage(token: token,), context: context);
+            Routes.instance.pushAndRemoveUtil(
+                widget: HomePage(
+                  token: token,
+                ),
+                context: context);
           } else {
             setState(() {
               isLoading = false;
@@ -83,30 +87,26 @@ class _LoginState extends State<Login> {
               ..showSnackBar(snackBar);
           }
           return body;
-        }
-        else{
+        } else {
           setState(() {
             isLoading = false;
           });
-          const snackBar = SnackBar(content: Text("Please enter a valid email address"));
+          const snackBar =
+              SnackBar(content: Text("Please enter a valid email address"));
           ScaffoldMessenger.of(context)
             ..removeCurrentSnackBar()
             ..showSnackBar(snackBar);
         }
-
-
-
       } else {
-         setState(() {
-        isLoading = false;
-      });
+        setState(() {
+          isLoading = false;
+        });
         const snackBar = SnackBar(content: Text("Please fill all the fields"));
         ScaffoldMessenger.of(context)
           ..removeCurrentSnackBar()
           ..showSnackBar(snackBar);
       }
-    }
-    catch(e){
+    } catch (e) {
       setState(() {
         isLoading = false;
       });
@@ -121,26 +121,27 @@ class _LoginState extends State<Login> {
     return null;
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
-          if(isLoading)...[
+          if (isLoading) ...[
             const Center(
-              child: CircularProgressIndicator() ,
+              child: CircularProgressIndicator(),
             )
           ],
           Center(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const TopTitles(
-                        title: "Login", subtitle: "Welcome back to Your Account"),
+                        title: "Login",
+                        subtitle: "Welcome back to Your Account"),
                     const SizedBox(height: 8),
                     TextFields(
                       keyboardType: TextInputType.emailAddress,
@@ -157,8 +158,9 @@ class _LoginState extends State<Login> {
                       controller: passwordController,
                       hintText: "Password",
                       iconData: Icons.lock,
-                      suffixIconData:
-                          !isShowPassword ? Icons.visibility : Icons.visibility_off,
+                      suffixIconData: !isShowPassword
+                          ? Icons.visibility
+                          : Icons.visibility_off,
                       label: "Password",
                       onTap: () {
                         setState(() {
@@ -172,9 +174,7 @@ class _LoginState extends State<Login> {
                     PrimaryButton(
                         title: "LOGIN",
                         onPressed: () {
-
-                            login();
-
+                          login();
                         }),
                     const SizedBox(
                       height: 6,
@@ -194,7 +194,8 @@ class _LoginState extends State<Login> {
                       child: Text(
                         "Create Account",
                         style: TextStyle(
-                            fontSize: 14, color: Theme.of(context).primaryColor),
+                            fontSize: 14,
+                            color: Theme.of(context).primaryColor),
                       ),
                     )),
                   ],
@@ -206,6 +207,4 @@ class _LoginState extends State<Login> {
       ),
     );
   }
-
-
 }

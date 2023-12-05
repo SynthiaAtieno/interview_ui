@@ -8,9 +8,10 @@ class Routes {
     return Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => widget), (route) => false);
   }
+
   Future<dynamic> push(
       {required Widget widget, required BuildContext context}) {
-    return Navigator.of(context).push(
-        MaterialPageRoute(builder: (context) => widget));
+    return Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => widget));
   }
 }

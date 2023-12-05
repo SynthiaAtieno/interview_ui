@@ -8,7 +8,17 @@ class TextFields extends StatelessWidget {
   final bool obsecure;
   final keyboardType;
   final void Function()? onTap;
-  const TextFields({super.key, required this.hintText, required this.iconData, this.suffixIconData, required this.label, required this.controller, required this.obsecure, this.onTap, required this.keyboardType});
+
+  const TextFields(
+      {super.key,
+      required this.hintText,
+      required this.iconData,
+      this.suffixIconData,
+      required this.label,
+      required this.controller,
+      required this.obsecure,
+      this.onTap,
+      required this.keyboardType});
 
   @override
   Widget build(BuildContext context) {
@@ -19,25 +29,24 @@ class TextFields extends StatelessWidget {
       decoration: InputDecoration(
           hintText: hintText,
           label: Text(label),
-          prefixIcon: Icon(iconData, color: Colors.grey,),
+          prefixIcon: Icon(
+            iconData,
+            color: Colors.grey,
+          ),
           suffixIcon: GestureDetector(
-            onTap: onTap,
-              child: Icon(suffixIconData, color: Colors.grey,)),
+              onTap: onTap,
+              child: Icon(
+                suffixIconData,
+                color: Colors.grey,
+              )),
           border: const OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(8)),
-              borderSide: BorderSide(
-                  color: Colors.grey,
-                  width: 1.0
-              ),
+            borderRadius: BorderRadius.all(Radius.circular(8)),
+            borderSide: BorderSide(color: Colors.grey, width: 1.0),
           ),
-        focusedBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(8)),
-          borderSide: BorderSide(
-              color: Colors.grey,
-              width: 1.0
-          ),
-        )
-      ),
+          focusedBorder: const OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(8)),
+            borderSide: BorderSide(color: Colors.grey, width: 1.0),
+          )),
     );
   }
 }

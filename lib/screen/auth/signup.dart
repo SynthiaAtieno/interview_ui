@@ -37,13 +37,12 @@ class _SignUpState extends State<SignUp> {
         'password': passwordC.text.trim()
       };
 
-      var response =
-          await http.post(Uri.parse("${Constants.base_url}register"),
-              headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-              },
-              body: json.encode(data));
+      var response = await http.post(Uri.parse("${Constants.base_url}register"),
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
+          body: json.encode(data));
       var body = jsonDecode(response.body);
       if (body['code'] == 200) {
         Routes.instance
@@ -80,7 +79,7 @@ class _SignUpState extends State<SignUp> {
                     subtitle: "Create an account to continue"),
                 const SizedBox(height: 10),
                 TextFields(
-                  keyboardType: TextInputType.name,
+                    keyboardType: TextInputType.name,
                     obsecure: false,
                     controller: nameC,
                     hintText: "Name",
@@ -88,7 +87,7 @@ class _SignUpState extends State<SignUp> {
                     label: "Name"),
                 const SizedBox(height: 10),
                 TextFields(
-                  keyboardType: TextInputType.emailAddress,
+                    keyboardType: TextInputType.emailAddress,
                     obsecure: false,
                     controller: emailC,
                     hintText: "Email",
