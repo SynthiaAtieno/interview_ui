@@ -68,9 +68,11 @@ class _LoginState extends State<Login> {
           if (body['code'] == 200) {
             var token = body['token'];
             var uid = body['user']['id'];
+            var email = body['user']['email'];
             var name = body['user']['name'];
             prefs.setString('token', token);
             prefs.setString('name', name);
+            prefs.setString('email', email);
             prefs.setInt("id", uid);
             Routes.instance.pushAndRemoveUtil(
                 widget: HomePage(

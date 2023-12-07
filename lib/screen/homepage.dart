@@ -4,6 +4,7 @@ import 'package:interview/data/menu_items.dart';
 import 'package:interview/model/menuItem.dart';
 import 'package:interview/screen/auth/login.dart';
 import 'package:interview/screen/deposit.dart';
+import 'package:interview/screen/update_user.dart';
 import 'package:interview/screen/withdraw.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -170,6 +171,12 @@ class _HomePageState extends State<HomePage> {
     switch (item) {
       case MenuItems.itemSignOut:
         showAlertDialog(context);
+        break;
+      case MenuItems.itemEditProfile:
+        Routes.instance
+            .push(widget: const UpdateProfile(), context: context);
+        break;
+
     }
   }
 
