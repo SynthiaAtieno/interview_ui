@@ -13,7 +13,6 @@ void main() async {
     runApp(const MyApp(
       token: null,
     ));
-    print('token has expired');
   } else {
     runApp(MyApp(
       token: preferences.getString('token'),
