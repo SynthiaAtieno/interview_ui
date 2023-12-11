@@ -2,11 +2,11 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:interview/widget/elevated_button.dart';
-import 'package:interview/widget/textfield.dart';
+import 'package:interview/widget/text_field.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
-import '../constants/constatnts.dart';
+import '../constants/constants.dart';
 
 class Deposit extends StatefulWidget {
   const Deposit({super.key});

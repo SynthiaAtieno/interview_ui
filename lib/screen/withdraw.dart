@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
-import '../constants/constatnts.dart';
+import '../constants/constants.dart';
 import '../widget/elevated_button.dart';
-import '../widget/textfield.dart';
+import '../widget/text_field.dart';
 
 class Withdraw extends StatefulWidget {
   const Withdraw({super.key});

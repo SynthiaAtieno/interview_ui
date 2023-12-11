@@ -2,13 +2,13 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:interview/constants/constatnts.dart';
+import 'package:interview/constants/constants.dart';
 import 'package:interview/screen/auth/signup.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../constants/routes/routes.dart';
 import '../../widget/elevated_button.dart';
-import '../../widget/textfield.dart';
+import '../../widget/text_field.dart';
 import '../../widget/top_title.dart';
 import '../homepage.dart';
 

@@ -2,10 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
-import '../../constants/constatnts.dart';
+import '../../constants/constants.dart';
 import '../../constants/routes/routes.dart';
 import '../../widget/elevated_button.dart';
-import '../../widget/textfield.dart';
+import '../../widget/text_field.dart';
 import '../../widget/top_title.dart';
 import 'package:http/http.dart' as http;
 import 'login.dart';
