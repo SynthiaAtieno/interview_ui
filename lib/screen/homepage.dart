@@ -125,6 +125,7 @@ class _HomePageState extends State<HomePage> {
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
                     children: [
+                      Text("{Ksh. $balance}"),
                       TextButton(
                           onPressed: () {
                             Routes.instance.push(
